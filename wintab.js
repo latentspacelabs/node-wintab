@@ -37,3 +37,11 @@ function pressure() {
     return (_pressure - wintab.minPressure()) / (levels() - 1);
 }
 exports.pressure = pressure;
+
+function orientation() {
+    return {
+        azimuth: wintab.azimuth() / 10, // 0 - 3600 => 0 - 360
+        altitude: wintab.altitude() / wintab.altitudeMax() // -900 - 900 => -1 - 1
+    };
+}
+exports.orientation = orientation;

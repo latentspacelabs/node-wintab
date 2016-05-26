@@ -29,6 +29,11 @@ setInterval(function () {
 }, 1);
 ```
 
+Test
+---
+`node index`
+
+
 License
 ---
 
