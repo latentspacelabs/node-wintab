@@ -154,10 +154,15 @@ HCTX initTablet(HWND hwnd) {
     lc.lcInOrgY = 0;
     lc.lcInExtX = TabletX.axMax;
     lc.lcInExtY = TabletY.axMax;
-    lc.lcOutOrgX = GetSystemMetrics(SM_XVIRTUALSCREEN);
-    lc.lcOutOrgY = GetSystemMetrics(SM_YVIRTUALSCREEN);
-    lc.lcOutExtX = GetSystemMetrics(SM_CXVIRTUALSCREEN);
-    lc.lcOutExtY = -GetSystemMetrics(SM_CYVIRTUALSCREEN);
+    lc.lcOutOrgX = 0;
+    lc.lcOutOrgY = 0;
+    lc.lcOutExtX = GetSystemMetrics(SM_CXSCREEN);
+    lc.lcOutExtY = -GetSystemMetrics(SM_CYSCREEN);
+    lc.lcSysOrgX = 0;
+    lc.lcSysOrgY = 0;
+    lc.lcSysExtX = GetSystemMetrics(SM_CXSCREEN);
+    lc.lcSysExtY = GetSystemMetrics(SM_CYSCREEN);
+
     pressure_min = (int) Pressure.axMin;
     pressure_max = (int) Pressure.axMax;
 
