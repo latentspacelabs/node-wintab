@@ -39,6 +39,14 @@ void get_pressure(const FunctionCallbackInfo<Value>& info) {
 	}
 }
 
+void get_pen_x(const FunctionCallbackInfo<Value>& info) {
+	info.GetReturnValue().Set(pen_x);
+}
+
+void get_pen_y(const FunctionCallbackInfo<Value>& info) {
+	info.GetReturnValue().Set(pen_y);
+}
+
 void get_azimuth(const FunctionCallbackInfo<Value>& info) {
 	info.GetReturnValue().Set(azimuth);
 }
@@ -236,6 +244,8 @@ void init(Handle<Object> exports) {
     );
 	Isolate* isolate = Isolate::GetCurrent();
     exports->Set(String::NewFromUtf8(isolate, "pressure"), FunctionTemplate::New(isolate, get_pressure)->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "x"), FunctionTemplate::New(isolate, get_pen_x)->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "y"), FunctionTemplate::New(isolate, get_pen_y)->GetFunction());
     exports->Set(String::NewFromUtf8(isolate, "azimuth"), FunctionTemplate::New(isolate, get_azimuth)->GetFunction());
     exports->Set(String::NewFromUtf8(isolate, "altitude"), FunctionTemplate::New(isolate, get_altitude)->GetFunction());
     exports->Set(String::NewFromUtf8(isolate, "twist"), FunctionTemplate::New(isolate, get_twist)->GetFunction());

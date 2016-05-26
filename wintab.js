@@ -45,3 +45,16 @@ function orientation() {
     };
 }
 exports.orientation = orientation;
+
+function allData() {
+    var o = orientation();
+    return {
+        x: wintab.x(),
+        y: wintab.y(),
+        pressure: pressure(),
+        azimuth: o.azimuth,
+        altitude: o.altitude,
+        isEraser: isEraser()
+    };
+}
+exports.allData = allData;
