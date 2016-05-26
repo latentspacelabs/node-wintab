@@ -4,6 +4,8 @@ node.js wintab binding for getting wacom tablet pressure data.
 
 Windows only.
 
+updated with latest v8 API per update guidelines [here](https://strongloop.com/strongblog/node-js-v0-12-c-apis-breaking/)
+
 Install
 ---
 ### prerequisite
