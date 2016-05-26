@@ -25,7 +25,7 @@ Usage
 ```js
 var wintab = require('node-wintab');
 setInterval(function () {
-    console.log(wintab.pressure());
+    console.log(wintab.allData());
 }, 1);
 ```
 
