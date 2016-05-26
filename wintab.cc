@@ -24,30 +24,34 @@ int pressure_min = -1;
 int pressure_max = -1;
 bool is_eraser = FALSE;
 
-Handle<Value> get_pressure(const Arguments& args) {
-    HandleScope scope;
-    if (pen_pressure < 0)
-        return scope.Close(Null());
-    return scope.Close(Number::New(pen_pressure));
+void get_pressure(const FunctionCallbackInfo<Value>& info) {
+	if (pen_pressure < 0) {
+		info.GetReturnValue().SetNull();
+	} else {
+		info.GetReturnValue().Set(pen_pressure);
+	}
 }
 
-Handle<Value> get_pressure_min(const Arguments& args) {
-    HandleScope scope;
-    if (pressure_min < 0)
-        return scope.Close(Null());
-    return scope.Close(Number::New(pressure_min));
+void get_pressure_min(const FunctionCallbackInfo<Value>& info) {
+	if (pressure_min < 0) {
+		info.GetReturnValue().SetNull();
+	}
+	else {
+		info.GetReturnValue().Set(pressure_min);
+	}
 }
 
-Handle<Value> get_pressure_max(const Arguments& args) {
-    HandleScope scope;
-    if (pressure_max < 0)
-        return scope.Close(Null());
-    return scope.Close(Number::New(pressure_max));
+void get_pressure_max(const FunctionCallbackInfo<Value>& info) {
+    if (pressure_max < 0) {
+		info.GetReturnValue().SetNull();
+	}
+	else {
+		info.GetReturnValue().Set(pressure_max);
+	}       
 }
 
-Handle<Value> check_eraser(const Arguments& args) {
-    HandleScope scope;
-    return scope.Close(Boolean::New(is_eraser));
+void check_eraser(const FunctionCallbackInfo<Value>& info) {
+	info.GetReturnValue().Set(is_eraser);	
 }
 
 HINSTANCE hinst;
@@ -59,30 +63,31 @@ LOGCONTEXT lc = {0};
 
 bool overlapped = FALSE;
 
-Handle<Value> peek_message(const Arguments& args) {
-    HandleScope scope;
+void peek_message(const FunctionCallbackInfo<Value>& info) {
     MSG msg;
     while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
-    return scope.Close(Undefined());
+	info.GetReturnValue().SetUndefined();
 }
 
-Handle<Value> check_overlapped(const Arguments& args) {
-    HandleScope scope;
+void check_overlapped(const FunctionCallbackInfo<Value>& info) {
+	Isolate* isolate = Isolate::GetCurrent();
+	EscapableHandleScope scope(isolate);
     bool tmp = overlapped;
     overlapped = FALSE;
-    return scope.Close(Boolean::New(tmp));
+	info.GetReturnValue().Set(tmp);
 }
 
-Handle<Value> enable_context(const Arguments& args) {
-    HandleScope scope;
+void enable_context(const FunctionCallbackInfo<Value>& info) {
+	Isolate* isolate = Isolate::GetCurrent();
+	EscapableHandleScope scope(isolate);
     if (hctx) {
         gpWTEnable(hctx, TRUE);
         gpWTOverlap(hctx, TRUE);
     }
-    return scope.Close(Undefined());
+	info.GetReturnValue().SetUndefined();
 }
 
 HCTX initTablet(HWND hwnd) {
@@ -171,13 +176,14 @@ void init(Handle<Object> exports) {
         CW_USEDEFAULT, CW_USEDEFAULT, (HWND) NULL,
         (HMENU) NULL, hinst, (LPVOID) NULL
     );
-    exports->Set(String::NewSymbol("pressure"), FunctionTemplate::New(get_pressure)->GetFunction());
-    exports->Set(String::NewSymbol("minPressure"), FunctionTemplate::New(get_pressure_min)->GetFunction());
-    exports->Set(String::NewSymbol("maxPressure"), FunctionTemplate::New(get_pressure_max)->GetFunction());
-    exports->Set(String::NewSymbol("isEraser"), FunctionTemplate::New(check_eraser)->GetFunction());
-    exports->Set(String::NewSymbol("peekMessage"), FunctionTemplate::New(peek_message)->GetFunction());
-    exports->Set(String::NewSymbol("checkOverlapped"), FunctionTemplate::New(check_overlapped)->GetFunction());
-    exports->Set(String::NewSymbol("enableContext"), FunctionTemplate::New(enable_context)->GetFunction());
+	Isolate* isolate = Isolate::GetCurrent();
+    exports->Set(String::NewFromUtf8(isolate, "pressure"), FunctionTemplate::New(isolate, get_pressure)->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "minPressure"), FunctionTemplate::New(isolate, get_pressure_min)->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "maxPressure"), FunctionTemplate::New(isolate, get_pressure_max)->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "isEraser"), FunctionTemplate::New(isolate, check_eraser)->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "peekMessage"), FunctionTemplate::New(isolate, peek_message)->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "checkOverlapped"), FunctionTemplate::New(isolate, check_overlapped)->GetFunction());
+    exports->Set(String::NewFromUtf8(isolate, "enableContext"), FunctionTemplate::New(isolate, enable_context)->GetFunction());
 }
 
 NODE_MODULE(wintab, init)
