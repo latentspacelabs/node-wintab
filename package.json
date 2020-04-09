@@ -1,6 +1,6 @@
 {
-  "name": "node-wintab",
-  "version": "0.2.1",
+  "name": "wintab-2020",
+  "version": "0.2.7",
   "description": "wintab api bindings for node.js",
   "main": "wintab.js",
   "gypfile": true,
@@ -14,12 +14,17 @@
     "api"
   ],
   "scripts": {
-    "test": "node-gyp rebuild && node ."
+    "test": "node-gyp rebuild && node .",
+    "install": "node-gyp rebuild"
   },
   "license": "MIT",
   "author": "JongChan Choi <disjukr@naver.com>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/disjukr/node-wintab.git"
-  }
+    "url": "git+https://github.com/disjukr/node-wintab.git"
+  },
+  "bugs": {
+    "url": "https://github.com/disjukr/node-wintab/issues"
+  },
+  "homepage": "https://github.com/disjukr/node-wintab#readme"
 }

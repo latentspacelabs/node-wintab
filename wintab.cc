@@ -90,11 +90,11 @@ void get_pressure_max(const FunctionCallbackInfo<Value>& info) {
 	}
 	else {
 		info.GetReturnValue().Set(pressure_max);
-	}       
+	}
 }
 
 void check_eraser(const FunctionCallbackInfo<Value>& info) {
-	info.GetReturnValue().Set(is_eraser);	
+	info.GetReturnValue().Set(is_eraser);
 }
 
 HINSTANCE hinst;
@@ -226,7 +226,7 @@ LRESULT msgLoop(HWND hwnd, unsigned msg, WPARAM wp, LPARAM lp) {
     return DefWindowProc(hwnd, msg, wp, lp);
 }
 
-void init(Handle<Object> exports) {
+void init(Local<Object> exports) {
     hinst = (HINSTANCE) GetModuleHandle(NULL);
     wc.style = 0;
     wc.lpfnWndProc = (WNDPROC) msgLoop;
@@ -248,22 +248,23 @@ void init(Handle<Object> exports) {
         (HMENU) NULL, hinst, (LPVOID) NULL
     );
 	Isolate* isolate = Isolate::GetCurrent();
-    exports->Set(String::NewFromUtf8(isolate, "pressure"), FunctionTemplate::New(isolate, get_pressure)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "x"), FunctionTemplate::New(isolate, get_pen_x)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "y"), FunctionTemplate::New(isolate, get_pen_y)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "azimuth"), FunctionTemplate::New(isolate, get_azimuth)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "altitude"), FunctionTemplate::New(isolate, get_altitude)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "twist"), FunctionTemplate::New(isolate, get_twist)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "azimuthMin"), FunctionTemplate::New(isolate, get_azimuth_min)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "azimuthMax"), FunctionTemplate::New(isolate, get_azimuth_max)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "altitudeMin"), FunctionTemplate::New(isolate, get_altitude_min)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "altitudeMax"), FunctionTemplate::New(isolate, get_altitude_max)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "minPressure"), FunctionTemplate::New(isolate, get_pressure_min)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "maxPressure"), FunctionTemplate::New(isolate, get_pressure_max)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "isEraser"), FunctionTemplate::New(isolate, check_eraser)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "peekMessage"), FunctionTemplate::New(isolate, peek_message)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "checkOverlapped"), FunctionTemplate::New(isolate, check_overlapped)->GetFunction());
-    exports->Set(String::NewFromUtf8(isolate, "enableContext"), FunctionTemplate::New(isolate, enable_context)->GetFunction());
+	v8::Local<v8::Context> context = exports->CreationContext();
+    exports->Set(context, String::NewFromUtf8(isolate, "pressure"), FunctionTemplate::New(isolate, get_pressure)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "x"), FunctionTemplate::New(isolate, get_pen_x)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "y"), FunctionTemplate::New(isolate, get_pen_y)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "azimuth"), FunctionTemplate::New(isolate, get_azimuth)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "altitude"), FunctionTemplate::New(isolate, get_altitude)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "twist"), FunctionTemplate::New(isolate, get_twist)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "azimuthMin"), FunctionTemplate::New(isolate, get_azimuth_min)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "azimuthMax"), FunctionTemplate::New(isolate, get_azimuth_max)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "altitudeMin"), FunctionTemplate::New(isolate, get_altitude_min)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "altitudeMax"), FunctionTemplate::New(isolate, get_altitude_max)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "minPressure"), FunctionTemplate::New(isolate, get_pressure_min)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "maxPressure"), FunctionTemplate::New(isolate, get_pressure_max)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "isEraser"), FunctionTemplate::New(isolate, check_eraser)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "peekMessage"), FunctionTemplate::New(isolate, peek_message)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "checkOverlapped"), FunctionTemplate::New(isolate, check_overlapped)->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(isolate, "enableContext"), FunctionTemplate::New(isolate, enable_context)->GetFunction(context).ToLocalChecked());
 }
 
 NODE_MODULE(wintab, init)
